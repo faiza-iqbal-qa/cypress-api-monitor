@@ -1,0 +1,16 @@
+{
+  "name": "cypress-api-monitor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+  "cy:open": "cypress open",
+  "monitor": "cypress run --spec cypress/e2e/api-monitor.cy.js"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "cypress": "^15.11.0"
+  }
+}
