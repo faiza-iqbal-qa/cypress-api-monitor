@@ -1,97 +1,100 @@
-# Cypress API Monitor (JSON Report)
+# Cypress API Monitor
 
-A tiny Cypress project that monitors a list of APIs and generates a JSON report after each run.
+A small experiment using Cypress to monitor API health and generate a structured JSON report.
 
-This is not UI testing — it uses Cypress as a lightweight API monitor:
-- calls URLs
-- checks status codes
-- optionally validates response fields
-- writes a single report to `results/report.json`
+Instead of testing UI flows, this project uses Cypress to run automated checks against a list of API endpoints and record the results.
 
 ---
 
-## What you get
-✅ A repeatable API health check run  
-✅ A clean JSON output you can share/log/extend  
-✅ Easy to add new endpoints in one place
+## What it does
+
+The script runs a set of API checks and verifies:
+
+- HTTP status codes
+- basic response structure
+- response duration
+
+After the run completes, it generates a JSON report summarizing the results.
+
+Example output:
+
+
+results/report.json
+
+
+The report contains:
+
+- API name
+- status code
+- response duration
+- pass/fail status
+- timestamp
 
 ---
 
-## Project structure
-- `cypress/e2e/api-monitor.cy.js` → main test (your endpoints live here)
-- `cypress/support/e2e.js` → Cypress required support file
-- `cypress/support/report.js` → builds/writes the JSON report
-- `results/report.json` → generated output (created after a run)
+## Tech Stack
+
+- Cypress
+- Node.js
+- JavaScript
 
 ---
 
 ## Setup
-### 1) Install dependencies
-```bash
+
+Install dependencies:
+
+
 npm install
 
-Run
-Run the monitor once
-npm run monitor
-Output
 
-After the run finishes, you’ll see:
+---
+
+## Run the monitor
+
+
+npm run monitor
+
+
+This will execute the Cypress tests and generate a report.
+
+---
+
+## Output
+
+After running the monitor, the report will be available at:
+
 
 results/report.json
 
-To view it:
 
-cat results/report.json
-Add your own endpoints
+---
 
-Open:
+## Adding new API checks
+
+Edit:
+
+
 cypress/e2e/api-monitor.cy.js
 
-Add another block like this:
 
+Add another `checkApi()` block with:
+
+- name
+- url
+- expected status
+- optional validation
+
+Example:
+
+```javascript
 checkApi({
-  name: "My API",
-  url: "https://example.com/api",
-  expectStatus: 200,
-  validate: (res) => {
-    expect(res.body).to.have.property("something");
-  },
-});
-Notes
+  name: "Example API",
+  url: "https://api.example.com",
+  expectStatus: 200
+})
+Why this project
 
-results/ is generated after every run (you usually don’t commit it).
+The idea was to explore using Cypress beyond UI testing and apply the same automation principles to simple API monitoring.
 
-This project is meant to be simple and extendable (retries, alerts, CI, cron, etc).
-
-
----
-
-## 2) Baby steps after README (blindly follow)
-
-### Step A: Save README
-Make sure the file is saved as:
-`README.md` in your project root.
-
----
-
-### Step B: Fix the Cypress error (support file)
-Run this command **exactly** (it creates the missing file Cypress wants):
-
-```bash
-mkdir -p cypress/support
-cat > cypress/support/e2e.js <<'EOF'
-// Cypress support file.
-// Loaded automatically before spec files.
-EOF
-
-Step C: Run it successfully
-npm install
-npm run monitor
-
-Step D: Confirm the report is created
-ls -la results
-cat results/report.json
-
-If you can see the JSON report, you’re done with the core build.
-
-
+It’s a small experiment, but it shows how testing tools can be adapted for reliability checks as well.
